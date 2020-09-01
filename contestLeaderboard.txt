@@ -14,12 +14,14 @@ It is guaranteed that there are at least 3 prize winners in the leaderboard and 
 
 CREATE PROCEDURE contestLeaderboard()
 BEGIN
+    set @k = 0;
     SELECT name
     FROM  (
         SELECT
-            ROW_NUMBER() OVER (ORDER BY score DESC) AS ranks,
+            @k := @k+1 AS ranks,
             name
         FROM leaderboard
+        ORDER BY score DESC
     )AS Foo
     WHERE ranks > 3 AND ranks < 9;
 END
